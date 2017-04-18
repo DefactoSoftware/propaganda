@@ -12,4 +12,4 @@ Generic 5V 3A power supply
 ```
 
 ## Diagram
-
+![Diagram](diagram.png)
