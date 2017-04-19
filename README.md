@@ -1,4 +1,4 @@
-# propaganda
+# P R O P A G A N D A
 
 This repository contains all code and documentation regarding the automated glass Defacto sign.
 
