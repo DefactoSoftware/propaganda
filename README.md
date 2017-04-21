@@ -78,4 +78,5 @@ echo "0" > /sys/class/gpio/gpio22/value
 ## Documentation
 
 Put changes in this file
+
 Use the **diagram.xml** file at https://www.draw.io/ to edit the diagram
