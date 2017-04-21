@@ -4,6 +4,8 @@ This repository contains all code and documentation regarding the automated glas
 
 ## Hardware
 
+![Hardware](Photo.png)
+
 ```
 Raspberry Pi 3
 DS1302 real-time clock module
