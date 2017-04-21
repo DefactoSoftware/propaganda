@@ -4,7 +4,7 @@ This repository contains all code and documentation regarding the automated glas
 
 ## Hardware
 
-![Hardware](Photo.png)
+![Hardware](Photo.jpg)
 
 ```
 Raspberry Pi 3
