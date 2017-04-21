@@ -1,0 +1,11 @@
+#! /bin/bash 
+
+# Sync system clock with RTC
+/home/pi/Scripts/rtc-pi
+
+# Enable gpio22
+/usr/bin/gpio export 22 out
+chown root:gpio /sys/class/gpio/gpio22/value
+chmod g+w /sys/class/gpio/gpio22/value
+
+exit 0
