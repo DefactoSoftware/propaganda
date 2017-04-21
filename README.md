@@ -74,3 +74,8 @@ Set the state of GPIO 22 by writing `1` for high (relay on) and `0` for low (rel
 echo "1" > /sys/class/gpio/gpio22/value
 echo "0" > /sys/class/gpio/gpio22/value
 ```
+
+## Documentation
+
+Put changes in this file
+Use the **diagram.xml** file at https://www.draw.io/ to edit the diagram
