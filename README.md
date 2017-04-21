@@ -15,7 +15,7 @@ Generic 5V 3A power supply
 ![Diagram](diagram.png)
 
 ## Configuration
-### Enable RTC module
+### RTC module
  
 Compile the RTC program:
 `cc rtc-pi.c -o rtc-pi`
@@ -23,12 +23,9 @@ Compile the RTC program:
 Set the time (replace time format by actual date/time):
 `sudo ./rtc-pi YYYYMMDDhhmmss`
 
-### Syncing PI clock with module
 A RTC module would be useless on the PI without using it to retrieve the right clock at the right time. And the PI needs a clock the most at boot.
 
-The simplest method would be to edit **/etc/rc.local** and add a call to the compiled rtc-pi binary.
-
-But to read a valid clock from the module we require it to have the correct time set beforehand. For this we can use the same binary to save the correct time (obtained most likely via NTP) on a previous shutdown.
+To read a valid clock from the module we require it to have the correct time set beforehand. For this we can use the same binary to save the correct time (obtained most likely via NTP) on a previous shutdown.
 
 For this, create a new file (let’s call it **savetime**) in **/etc/init.d** with the following content:
 
@@ -38,12 +35,27 @@ For this, create a new file (let’s call it **savetime**) in **/etc/init.d** wi
 /usr/sbin/rtc-pi `date +"%Y%m%d%H%M%S"`
 ```
 
-Then symlink this file in **/etc/rc0.d**
+And make it executable
+`sudo chmod a+x /etc/init.d/savetime`
 
+Then symlink this file in **/etc/rc0.d**
 `ln -s /etc/init.d/savetime /etc/rc0.d/K01savetime`
 
 **rc0.d** is the folder for scripts called at runlevel 0 (shutdown/restart)
 
+### Set the main script in place
+Put the **BoredTimes** script in `/home/pi/Scripts/boredtimes/`
+
+### Install Astral
+`sudo pip install astral`
+
+### Executing time and GPIO pins script at boot
+
+```
+sudo cp startup /etc/init.d/startup
+sudo chmod a+x /etc/init.d/startup
+sudo insserv /etc/init.d/startup
+```
 
 ## Testing
 
@@ -53,12 +65,6 @@ Test if the RTC contains the right date/time:
 
 ### Relay
 Using the relay via the **/sys** filesystem
-
-Enable GPIO 22 access via the Kernel on path **/sys/class/gpio/**, and configure it as an output pin:
-```
-echo "22" > /sys/class/gpio/export
-echo "out" > /sys/class/gpio/gpio22/direction
-```
 
 View the current state of GPIO 22:
 `cat /sys/class/gpio/gpio122/value`
