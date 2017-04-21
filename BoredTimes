@@ -1,0 +1,63 @@
+#!/usr/bin/python
+from astral import Astral
+import datetime
+import os
+
+active_days = [0,1,2,3,4] # 0-6 where 0 is monday, 6 is sunday
+city_name = 'Amsterdam'
+gpio_pin = 'gpio22'
+day_start = 7
+day_end = 19
+
+now = datetime.datetime.now()
+#now = datetime.datetime.now().replace(month=12, hour=8)
+
+lights_on = now.replace(hour=day_start, minute=0, second=0)
+lights_off = now.replace(hour=day_end, minute=0, second=0)
+
+a = Astral()
+a.solar_depression = 'civil'
+city = a[city_name]
+sun = city.sun(date=now, local=True)
+
+sunrise = sun['sunrise'].replace(tzinfo=None)
+sunset = sun['sunset'].replace(tzinfo=None)
+
+dark_outside = now < sunrise or now > sunset
+active_time = now >= lights_on and now <= lights_off
+active_day = now.weekday() in active_days
+light_on = active_time and active_day and dark_outside
+
+def set_light(value):
+    cmd = "echo %s > /sys/class/gpio/%s/value" % (value, gpio_pin)
+    os.system(cmd)
+
+print('Current time: %s' % now)
+
+print('Sun rises at: %s' % sunrise)
+print('Sun sets at: %s' % sunset)
+print('Lights on at: %s' % lights_on)
+print('Lights off at: %s' % lights_off)
+    
+if dark_outside:
+    print('Its dark outside')
+else:
+    print('Its light outside')
+
+if active_day:
+    print('Today is an office day')
+else:
+    print('Today is a day off')
+
+if active_time:
+    print('During office hours')
+else:
+    print('Outside office hours')
+
+if light_on:
+    set_light(1)
+    print('Lights on!')
+else:
+    set_light(0)
+    print('Lights off!')
+
